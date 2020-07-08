@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff135;
+    transition: all .3s ease;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    max-width: 35rem;
+    transition: all .3s ease-in;
+}
+
+.shake {
+    animation: shake .5s 1;
+}
+
+.image:active {
+    transform: scale(1.3);
+}
+
+.clicks {
+    color: #333;
+    font-size: 3rem;
+    font-family: 'Bangers', cursive;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+    /* 0% {
+        transform: translate(-30px, 15px) rotate(-10deg);
+    }
+
+    50% {
+        transform: translate(30px, -20px) rotate(10deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(0deg);
+    } */
+}
+
