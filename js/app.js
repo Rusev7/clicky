@@ -51,9 +51,18 @@ function appInit() {
 
 function setImgSrc(value, animationBool) {
     const img = document.querySelector('.image');
-    img.src = `img/img-${value}.png`;
-    if(value > 10) {
+    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+
+    if(width <= 600) {
+        img.src = `img/img-${value}-compressor.png`;
+    } else {
+        img.src = `img/img-${value}.png`;
+    }
+
+    if(value > 10 && width > 600) {
         img.src = `img/moresoon.png`;
+    } else if (value > 10 && width <= 600) {
+        img.src = `img/moresoon-compressor.png`;
     }
     const gameContainerElement = document.querySelector('.game-container');
 
