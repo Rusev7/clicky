@@ -12,8 +12,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fff135;
-    transition: all .3s ease;
+    background-color: #ff6600;
+    transition: all 1s ease;
 }
 
 .game-container {

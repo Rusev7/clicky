@@ -6,12 +6,14 @@ appInit();
 
 function changeBackground() {
     const colors = ['#FFA421', '#0078ff', '#bd00ff', '#01ff1f', '#e3ff00'];
+    const yellowColors = ['#ffa505', '#ffb805', '#ffc905', '#ffe505', '#fffb05'];
+    const orangeColors = ['#ff6600', '#ff781f', '#ff8b3d', '#ff9d5c', '#ffaf7a'];
 
-    let num = Math.floor(Math.random() * colors.length);
+    let num = Math.floor(Math.random() * orangeColors.length);
 
     const bodyEl = document.querySelector('body');
 
-    bodyEl.style.backgroundColor = colors[num];
+    bodyEl.style.backgroundColor = orangeColors[num];
 }
 
 function appInit() {
