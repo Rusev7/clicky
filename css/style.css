@@ -37,6 +37,10 @@ body {
     animation: shake .5s 1;
 }
 
+.shake:active {
+    animation: shake .5s 1;
+}
+
 .image:active {
     transform: scale(1.3);
 }
