@@ -52,12 +52,13 @@ function appInit() {
 function setImgSrc(value, animationBool) {
     const img = document.querySelector('.image');
     img.src = `img/img-${value}.png`;
+    const gameContainerElement = document.querySelector('.game-container');
 
     if(animationBool) {
-        img.classList.add('shake');
+        gameContainerElement.classList.add('shake');
         img.classList.remove('clickable');
     } else {
-        img.classList.remove('shake');
+        gameContainerElement.classList.remove('shake');
         img.classList.add('clickable');
     }
 }
