@@ -4,13 +4,10 @@ let clicksCount, imagesValue;
 appInit();
 
 
-function changeBackground() {
+function changeBackground(num) {
     const colors = ['#FFA421', '#0078ff', '#bd00ff', '#01ff1f', '#e3ff00'];
     const yellowColors = ['#ffa505', '#ffb805', '#ffc905', '#ffe505', '#fffb05'];
-    const orangeColors = ['#ff6600', '#ff781f', '#ff8b3d', '#ff9d5c', '#ffaf7a'];
-
-    let num = Math.floor(Math.random() * orangeColors.length);
-
+    const orangeColors = ['#ffaf7a', '#ff9d5c', '#ff8b3d', '#ff781f','#ff6600'];
     const bodyEl = document.querySelector('body');
 
     bodyEl.style.backgroundColor = orangeColors[num];
@@ -39,11 +36,16 @@ function appInit() {
 
     const img = document.querySelector('.image');
     const btn = document.querySelector('.btn');
+    let num = 0;
 
     img.addEventListener('click', () => {
-        changeBackground();
+        changeBackground(num);
         clicksPresentUI(clicksCounter());
         checkNumberOfClicks(clicksCount);
+        num++;
+        if(num == 5) {
+            num = 0;
+        }
     });
 
     btn.addEventListener('click', () => {
@@ -61,9 +63,9 @@ function setImgSrc(value, animationBool) {
         img.src = `img/img-${value}.png`;
     }
 
-    if(value > 10 && width > 600) {
+    if(value > 13 && width > 600) {
         img.src = `img/moresoon.png`;
-    } else if (value > 10 && width <= 600) {
+    } else if (value > 13 && width <= 600) {
         img.src = `img/moresoon-compressor.png`;
     }
     const gameContainerElement = document.querySelector('.game-container');
@@ -95,14 +97,6 @@ function clicksPresentUI(clicks) {
 }
 
 function checkNumberOfClicks(clicks) {
-    const gameContainerElement = document.querySelector('.game-container');
-
-    if(clicks % 250 == 0) {
-        gameContainerElement.classList.add('shake');
-    } else {
-        gameContainerElement.classList.remove('shake');
-    }
- 
     if(clicks % 50 == 0) {
         imagesValue++;
         localStorage.setItem('imagesValue', imagesValue);
