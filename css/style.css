@@ -34,14 +34,14 @@ body {
 }
 
 .shake {
-    animation: shake .5s 1;
+    animation: shake .5s 2;
 }
 
 .shake:active {
-    animation: shake .5s 1;
+    animation: shake .5s 2;
 }
 
-.image:active {
+.clickable:active {
     transform: scale(1.3);
 }
 

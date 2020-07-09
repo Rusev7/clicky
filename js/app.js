@@ -55,8 +55,10 @@ function setImgSrc(value, animationBool) {
 
     if(animationBool) {
         img.classList.add('shake');
+        img.classList.remove('clickable');
     } else {
         img.classList.remove('shake');
+        img.classList.add('clickable');
     }
 }
 
