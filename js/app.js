@@ -52,6 +52,9 @@ function appInit() {
 function setImgSrc(value, animationBool) {
     const img = document.querySelector('.image');
     img.src = `img/img-${value}.png`;
+    if(value > 10) {
+        img.src = `img/moresoon.png`;
+    }
     const gameContainerElement = document.querySelector('.game-container');
 
     if(animationBool) {
