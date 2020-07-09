@@ -27,6 +27,12 @@ body {
     transition: all .3s ease-in;
 }
 
+@media screen and (max-width: 600px) {
+    .image {
+        max-width: 25rem;
+    }
+}
+
 .shake {
     animation: shake .5s 1;
 }
