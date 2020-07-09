@@ -36,11 +36,16 @@ function appInit() {
     setImgSrc(imagesValue, false);
 
     const img = document.querySelector('.image');
+    const btn = document.querySelector('.btn');
 
     img.addEventListener('click', () => {
         changeBackground();
         clicksPresentUI(clicksCounter());
         checkNumberOfClicks(clicksCount);
+    });
+
+    btn.addEventListener('click', () => {
+        reset('clicksCount', 'imagesValue');
     });
 }
 
@@ -53,6 +58,12 @@ function setImgSrc(value, animationBool) {
     } else {
         img.classList.remove('shake');
     }
+}
+
+function reset(clicks, imgValue) {
+    localStorage.removeItem(clicks);
+    localStorage.removeItem(imgValue);
+    location.reload();
 }
 
 function clicksCounter() {
@@ -69,13 +80,13 @@ function clicksPresentUI(clicks) {
 function checkNumberOfClicks(clicks) {
     const gameContainerElement = document.querySelector('.game-container');
 
-    if(clicks % 500 == 0) {
+    if(clicks % 250 == 0) {
         gameContainerElement.classList.add('shake');
     } else {
         gameContainerElement.classList.remove('shake');
     }
  
-    if(clicks / 100 == imagesValue + 1) {
+    if(clicks % 50 == 0) {
         imagesValue++;
         localStorage.setItem('imagesValue', imagesValue);
         setImgSrc(imagesValue, true);
@@ -84,4 +95,3 @@ function checkNumberOfClicks(clicks) {
     }
 }
 
-console.log(1500 % 500);

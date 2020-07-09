@@ -47,6 +47,27 @@ body {
     font-family: 'Bangers', cursive;
 }
 
+.btn {
+    margin-top: 40px;
+    outline: none;
+    border: none;
+    padding: 15px 50px;
+    background-color: #ff1363;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .3s ease-in;
+    font-family: 'Bangers', cursive;
+    font-size: 2.5rem;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn:active {
+    transform: scale(1.1);
+}
+
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
   10% { transform: translate(-1px, -2px) rotate(-1deg); }
