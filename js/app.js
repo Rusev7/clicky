@@ -34,8 +34,8 @@ function appInit() {
 
     setImgSrc(imagesValue, false);
 
-    const img = document.querySelector('.image');
-    const btn = document.querySelector('.btn');
+    const img = document.querySelector('.game-container__image');
+    const btn = document.querySelector('.game-container__reset-btn');
     let num = 0;
 
     img.addEventListener('click', () => {
@@ -54,7 +54,7 @@ function appInit() {
 }
 
 function setImgSrc(value, animationBool) {
-    const img = document.querySelector('.image');
+    const img = document.querySelector('.game-container__image');
     let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
     if(width <= 600) {
@@ -106,3 +106,4 @@ function checkNumberOfClicks(clicks) {
     }
 }
 
+// To do: add cash / shop system;

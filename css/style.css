@@ -1,90 +1,62 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
 
 html {
-    font-size: 62.5%;
-}
+  scroll-behavior: smooth;
+  font-size: 62.5%; }
 
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffaf7a;
-    transition: all 1s ease;
-}
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffaf7a;
+  transition: all 1s ease; }
 
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+a,
+a:link,
+a:visited {
+  text-decoration: none; }
 
-.image {
-    max-width: 35rem;
-    transition: all .3s ease-in;
-}
-
-@media screen and (max-width: 600px) {
-    .image {
-        max-width: 25rem;
-    }
-}
-
-.shake {
-    animation: shake .5s 2;
-}
-
-.shake:active {
-    animation: shake .5s 2;
-}
-
-.clickable:active {
-    transform: scale(1.3);
-}
+::selection {
+  color: #fff;
+  background: #000; }
 
 .clicks {
-    color: #333;
-    font-size: 3rem;
-    font-family: 'Bangers', cursive;
-}
-
-.btn {
-    margin-top: 40px;
-    outline: none;
-    border: none;
-    padding: 15px 50px;
-    background-color: #ff1363;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all .3s ease-in;
-    font-family: 'Bangers', cursive;
-    font-size: 2.5rem;
-}
-
-.btn:hover {
-    transform: scale(1.05);
-}
-
-.btn:active {
-    transform: scale(1.1);
-}
+  color: #333;
+  font-size: 3rem;
+  font-family: "Bangers", cursive; }
 
 @keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -2px) rotate(-1deg); }
-  20% { transform: translate(-3px, 0px) rotate(1deg); }
-  30% { transform: translate(3px, 2px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 2px) rotate(-1deg); }
-  60% { transform: translate(-3px, 1px) rotate(0deg); }
-  70% { transform: translate(3px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(1deg); }
-  90% { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
-    /* 0% {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg); }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg); }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg); }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg); }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg); }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg); }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg); }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg); }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg); }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg); }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg); }
+  /* 0% {
         transform: translate(-30px, 15px) rotate(-10deg);
     }
 
@@ -94,6 +66,68 @@ body {
 
     100% {
         transform: translate(0,0) rotate(0deg);
-    } */
-}
+    } */ }
 
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .game-container__image {
+    max-width: 35rem;
+    transition: all .3s ease-in; }
+    .game-container__image:hover {
+      cursor: pointer; }
+  .game-container__reset-btn {
+    margin-top: 40px;
+    outline: none;
+    border: none;
+    padding: 10px 40px;
+    background-color: #ff1363;
+    box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .3s ease-in;
+    font-family: "Bangers", cursive;
+    font-size: 2.5rem; }
+    .game-container__reset-btn:hover {
+      transform: scale(1.05); }
+    .game-container__reset-btn:active {
+      transform: scale(1.1); }
+
+@media screen and (max-width: 600px) {
+  .game-container__image {
+    max-width: 25rem; } }
+
+.shake {
+  animation: shake .5s 2; }
+
+.shake:active {
+  animation: shake .5s 2; }
+
+.clickable:active {
+  transform: scale(1.3); }
+
+.shop {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .shop__btn {
+    margin-left: 1.5rem;
+    padding: 1.6rem;
+    transition: all .3s ease;
+    box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.5);
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    background-color: #eff;
+    font-family: "Press Start 2P", cursive;
+    font-size: 1rem; }
+    .shop__btn:hover {
+      cursor: pointer;
+      background-color: #000;
+      color: #eff; }
+    .shop__btn:active {
+      box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.8);
+      transform: translateY(5px); }
+    .shop__btn:nth-child(1) {
+      margin-left: 0; }

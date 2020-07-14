@@ -5,12 +5,20 @@
     <title>Clicky</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
+    
+    <div class="shop">
+        <button class="shop__btn">+2 clicks</button>
+        <button class="shop__btn">Buy Weapon</button>
+        <button class="shop__btn">Change Colors</button>
+    </div>
+
     <div class="game-container">
-        <img alt="Egg" class="image clickable">
+        <img alt="Egg" class="game-container__image clickable">
         <h3 class="clicks">Number of clicks: <span id="clicks"></span></h3>
-        <button class="btn">RESET</button>
+        <button class="game-container__reset-btn">RESET</button>
     </div>
 
     <script src="./js/app.js" defer></script>
