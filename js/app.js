@@ -1,25 +1,39 @@
-let clicksCount, imagesValue;
+let clicksCount, imagesValue, clicksPerClick, cash;
+let colorIndex = 0;
+let clicksCosts = [100, 1000, 10000, 1000000];
+let clicksCostIndex = 0;
+// COLOR SCHEMES
+const yellowColors = ['#ffa505', '#ffb805', '#ffc905', '#ffe505', '#fffb05'];
+const orangeColors = ['#ffaf7a', '#ff9d5c', '#ff8b3d', '#ff781f','#ff6600'];
+const redColors = ['#963232', '#ab3232', '#b82f2f', '#c92929', '#e72222'];
+const blackColors = ['#00000', '#191919', '#333333', '#4d4d4d', '#666666'];
 
+const colorsArr = [orangeColors, yellowColors , redColors, blackColors];
 // start the game;
 appInit();
 
-
-function changeBackground(num) {
-    const colors = ['#FFA421', '#0078ff', '#bd00ff', '#01ff1f', '#e3ff00'];
-    const yellowColors = ['#ffa505', '#ffb805', '#ffc905', '#ffe505', '#fffb05'];
-    const orangeColors = ['#ffaf7a', '#ff9d5c', '#ff8b3d', '#ff781f','#ff6600'];
-    const bodyEl = document.querySelector('body');
-
-    bodyEl.style.backgroundColor = orangeColors[num];
-}
-
 function appInit() {
     
+    // Check for localstorage values
     if(localStorage.getItem('clicksCount') == null) {
         clicksCount = 0;
         localStorage.setItem('clicksCount', clicksCount);
     } else {
         clicksCount = Number(localStorage.getItem('clicksCount'));
+    }
+
+    if(localStorage.getItem('clicksPerClick') == null) {
+        clicksPerClick = 1;
+        localStorage.setItem('clicksPerClick', clicksPerClick);
+    } else {
+        clicksPerClick = Number(localStorage.getItem('clicksPerClick'));
+    }
+
+    if(localStorage.getItem('cashAmount') == null) {
+        cash = 0;
+        localStorage.setItem('cashAmount', cash);
+    } else {
+        cash = localStorage.getItem('cashAmount');
     }
 
     if(localStorage.getItem('imagesValue') == null) {
@@ -30,27 +44,68 @@ function appInit() {
     }
 
     const span = document.getElementById('clicks');
-    span.innerText = clicksCount;
-
-    setImgSrc(imagesValue, false);
-
     const img = document.querySelector('.game-container__image');
-    const btn = document.querySelector('.game-container__reset-btn');
+    const resetBtn = document.querySelector('.game-container__reset-btn');
+    const changeColorSchemeBtn = document.getElementById('changeColors');
+    const addClicksBtn = document.getElementById('addClicks');
+    const cashTextElement = document.querySelector('.cash-container__cash');
     let num = 0;
+    setImgSrc(imagesValue, false);    
 
+    span.innerText = clicksCount;
+    cashTextElement.innerText = `$${cash}`;
+    // ----- Change Colors
+    changeColorSchemeBtn.addEventListener('click', () => {
+        changeColorScheme();
+    });
+
+    addClicksBtn.addEventListener('click', () => {
+        addClicks();
+    });
+
+    // ----- Main Clicking Event Listener
     img.addEventListener('click', () => {
         changeBackground(num);
         clicksPresentUI(clicksCounter());
         checkNumberOfClicks(clicksCount);
+        addCash(clicksPerClick);
         num++;
         if(num == 5) {
             num = 0;
         }
     });
 
-    btn.addEventListener('click', () => {
-        reset('clicksCount', 'imagesValue');
+    // ----- RESET THE GAME
+    resetBtn.addEventListener('click', () => {
+        reset('clicksCount', 'imagesValue', 'clicksPerClick', 'cashAmount');
     });
+}
+
+function changeBackground(num) {
+    const bodyEl = document.querySelector('body');
+    bodyEl.style.backgroundColor = colorsArr[colorIndex][num];
+}
+
+function changeColorScheme() {
+    let colorSchemeRandomNum = Math.floor(Math.max(Math.random() * colorsArr.length, 0));
+    console.log(colorSchemeRandomNum);
+    colorIndex = colorSchemeRandomNum;
+    const bodyEl = document.querySelector('body');
+    bodyEl.style.backgroundColor = colorsArr[colorIndex][0];
+}
+
+function addClicks(clicksCount) {
+    if(clicksCount >= clicksCosts[clicksCostIndex]) {
+        // ....
+    }
+}
+
+function addCash(clicksPerClick) {
+    let cashToAdd = clicksPerClick * 10;
+    cash += cashToAdd;
+    localStorage.setItem('cashAmount', cash);
+    const cashTextElement = document.querySelector('.cash-container__cash');
+    cashTextElement.innerText = `$${cash}`;
 }
 
 function setImgSrc(value, animationBool) {
@@ -79,14 +134,16 @@ function setImgSrc(value, animationBool) {
     }
 }
 
-function reset(clicks, imgValue) {
+function reset(clicks, imgValue, clicksPerClick, cashAmount) {
     localStorage.removeItem(clicks);
     localStorage.removeItem(imgValue);
+    localStorage.removeItem(clicksPerClick);
+    localStorage.removeItem(cashAmount);
     location.reload();
 }
 
 function clicksCounter() {
-    clicksCount++;
+    clicksCount += clicksPerClick;
     localStorage.setItem('clicksCount', clicksCount);
     return clicksCount;
 }

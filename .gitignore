@@ -14,3 +14,5 @@ sass/base/_animations.scss
 sass/base/_reset.scss
 sass/base/_typography.scss
 sass/components/_game-container.scss
+package.json
+package-lock.json
