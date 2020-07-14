@@ -62,7 +62,6 @@ function appInit() {
 
     let num = 0;
     setImgSrc(imagesValue, false);    
-    console.log(currentLevelPoints);
     span.innerText = clicksCount;
     cashTextElement.innerText = `$${Number(cash)}`;
     clicksButtonSpan.innerText = clicksCosts[clicksCostIndex].clicksToAdd;
@@ -192,7 +191,6 @@ function clicksCounter() {
 }
 
 function checkNumberOfClicks(clicks) {
-    console.log(currentLevelPoints);
     if(clicks >= currentLevelPoints) {
         currentLevelPoints = (currentLevelPoints + 50) * clicksPerClick;
         localStorage.setItem('currentLevelPoints', currentLevelPoints);
