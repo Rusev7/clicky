@@ -128,6 +128,8 @@ a:visited {
       color: #eff; }
     .shop__btn:active {
       box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.8);
-      transform: translateY(5px); }
+      transform: translateY(5px);
+      background-color: #000;
+      color: #eff; }
     .shop__btn:nth-child(1) {
       margin-left: 0; }
