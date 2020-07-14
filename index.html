@@ -15,9 +15,19 @@
     </div>
 
     <div class="shop">
-        <button class="shop__btn" id="addClicks">+2 clicks</button>
-        <button class="shop__btn">Buy Weapon</button>
-        <button class="shop__btn" id="changeColors">Change Colors</button>
+        <div class="shop__btn-container">
+            <button class="shop__btn" id="addClicks">+<span id="clicksToAdd">2</span> clicks</button>
+            <span class="shop__btn-info">^^$<span id="clickCost"></span>^^</span>
+        </div>
+        
+        <div class="shop__btn-container">
+            <button class="shop__btn">Buy Weapon</button>
+            <span class="shop__btn-info">^^$<span id="weaponCost">15000</span>^^</span>
+        </div>
+        
+        <div class="shop__btn-container">
+            <button class="shop__btn" id="changeColors">Change Colors</button>
+        </div>
     </div>
 
     <div class="game-container">
