@@ -99,7 +99,7 @@ const DOMStrings = {
 appInit();
 
 function appInit() {
-    
+    localStorage.clear();
     // Check for localstorage values
     checkAndSetLocalStorage();
 
