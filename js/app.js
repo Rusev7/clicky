@@ -99,7 +99,6 @@ const DOMStrings = {
 appInit();
 
 function appInit() {
-    localStorage.clear();
     // Check for localstorage values
     checkAndSetLocalStorage();
 
@@ -204,16 +203,18 @@ function changeWeaponBtnSpanUI() {
 
 function showWeaponUI() {
     const weaponImg = document.querySelector(DOMStrings.weaponImg);
-    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    let imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}.png`;
     
-    if(width <= 600) {
-        imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}-compressor.png`;
-    }
 
     if(weaponsCostIndex == 0) {
         weaponImg.style.display = 'none';
     } else {
+        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        let imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}.png`;
+    
+        if(width <= 600) {
+            imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}-compressor.png`;
+        }
+        
         weaponImg.src = imgSrc;
         weaponImg.style.display = 'block';
     }
