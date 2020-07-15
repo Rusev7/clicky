@@ -6,22 +6,22 @@ let weaponsCostIndex = 0;
 
 const clicksCosts = [
     {
-        cost: 100,
+        cost: 1000,
         clicksToAdd: 2
     }, 
     
     {
-        cost: 100,
+        cost: 10000,
         clicksToAdd: 5
     }, 
     
     {
-        cost: 100,
+        cost: 20000,
         clicksToAdd: 10
     }, 
     
     {
-        cost: 100,
+        cost: 100000,
         clicksToAdd: 20
     },
 
