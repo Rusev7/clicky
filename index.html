@@ -11,18 +11,18 @@
 <body>
     
     <div class="cash-container">
-        <h3 class="cash-container__cash">$0</h3>
+        <h3 class="cash-container__cash"></h3>
     </div>
 
     <div class="shop">
-        <div class="shop__btn-container">
+        <div class="shop__btn-container" id="clicksBtn">
             <button class="shop__btn" id="addClicks">+<span id="clicksToAdd">2</span> clicks</button>
             <span class="shop__btn-info">^^$<span id="clickCost"></span>^^</span>
         </div>
         
-        <div class="shop__btn-container">
-            <button class="shop__btn">Buy Weapon</button>
-            <span class="shop__btn-info">^^$<span id="weaponCost">15000</span>^^</span>
+        <div class="shop__btn-container" id="weaponBtn">
+            <button class="shop__btn" id="buyWeapons">Buy <span id="weaponToAdd"></span></button>
+            <span class="shop__btn-info">^^$<span id="weaponCost"></span>^^</span>
         </div>
         
         <div class="shop__btn-container">
@@ -35,7 +35,7 @@
         <h3 class="clicks">Number of clicks: <span id="clicks"></span></h3>
         <button class="game-container__reset-btn">RESET</button>
     </div>
-
+    <img src="./img/axe.png" alt="weapon" class="weapons">
     <script src="./js/app.js" defer></script>
 </body>
 </html>

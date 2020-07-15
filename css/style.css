@@ -57,18 +57,15 @@ a:visited {
   90% {
     transform: translate(1px, 2px) rotate(0deg); }
   100% {
-    transform: translate(1px, -2px) rotate(-1deg); }
-  /* 0% {
-        transform: translate(-30px, 15px) rotate(-10deg);
-    }
+    transform: translate(1px, -2px) rotate(-1deg); } }
 
-    50% {
-        transform: translate(30px, -20px) rotate(10deg);
-    }
-
-    100% {
-        transform: translate(0,0) rotate(0deg);
-    } */ }
+@keyframes strike {
+  0% {
+    transform: rotate(0deg) translate(0, 0); }
+  50% {
+    transform: rotate(-50deg) translate(-20px, 10px); }
+  100% {
+    transform: rotate(0deg) translate(0, 0); } }
 
 .game-container {
   display: flex;
@@ -153,3 +150,27 @@ a:visited {
   padding: 1.5rem 4rem;
   font-size: 3rem;
   font-family: "Do Hyeon", sans-serif; }
+
+.weapons {
+  position: absolute;
+  width: 15rem;
+  right: 25%;
+  transform: rotate(0deg); }
+
+@media screen and (max-width: 1100px) {
+  .weapons {
+    width: 13rem;
+    right: 22%; } }
+
+@media screen and (max-width: 800px) {
+  .weapons {
+    width: 12rem;
+    right: 15%; } }
+
+@media screen and (max-width: 600px) {
+  .weapons {
+    width: 10rem;
+    right: 15%; } }
+
+.strike {
+  animation: strike .3s ease-out 1; }

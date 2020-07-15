@@ -2,8 +2,9 @@ let clicksCount, imagesValue, clicksPerClick, cash;
 let colorIndex = 0;
 let clicksCostIndex = 0;
 let currentLevelPoints = 50;
+let weaponsCostIndex = 0;
 
-let clicksCosts = [
+const clicksCosts = [
     {
         cost: 1000,
         clicksToAdd: 2
@@ -22,8 +23,52 @@ let clicksCosts = [
     {
         cost: 50000,
         clicksToAdd: 20
+    },
+
+    {
+        cost: 0,
+        clicksToAdd: 0,
     }
 ];
+
+// Weapons 
+const weaponsCosts = [
+    {
+        name: 'axe',
+        cost: 3000, // 3000
+        clicksToAdd: 3,
+        src: './img/axe',
+    }, 
+    
+    {
+        name: 'sword',
+        cost: 30000, // 150000
+        clicksToAdd: 5,
+        src: './img/sword',
+    }, 
+    
+    {
+        name: 'hammer',
+        cost: 100000, // 35000
+        clicksToAdd: 8,
+        src: './img/hammer',
+    }, 
+    
+    {
+        name: 'arm of pain',
+        cost: 1000000, // 150000
+        clicksToAdd: 15,
+        src: './img/arm',
+    },
+
+    {
+        name: 'none',
+        cost: 0,
+        clicksToAdd: 0,
+        src: ''
+    }
+];
+
 // COLOR SCHEMES
 const yellowColors = ['#ffa505', '#ffb805', '#ffc905', '#ffe505', '#fffb05'];
 const orangeColors = ['#ffaf7a', '#ff9d5c', '#ff8b3d', '#ff781f','#ff6600'];
@@ -42,6 +87,13 @@ const DOMStrings = {
     clicksCostSpan: 'clickCost',
     numClicksSpan: 'clicks',
     gameContainerElement: '.game-container',
+    weapon: '.weapons',
+    weaponsCostSpan: 'weaponCost',
+    weaponsButtonSpan: 'weaponToAdd',
+    buyWeaponsBtn: 'buyWeapons',
+    weaponImg: '.weapons',
+    weaponBtnContainer: 'weaponBtn',
+    clicksBtnContainer: 'clicksBtn',
 };
 // start the game;
 appInit();
@@ -51,30 +103,57 @@ function appInit() {
     // Check for localstorage values
     checkAndSetLocalStorage();
 
-    const span = document.getElementById(DOMStrings.numClicksSpan);
     const img = document.querySelector(DOMStrings.img);
     const resetBtn = document.querySelector(DOMStrings.resetBtn);
+    const cashTextElement = document.querySelector(DOMStrings.cashTextElement);
+    const span = document.getElementById(DOMStrings.numClicksSpan);
     const changeColorSchemeBtn = document.getElementById(DOMStrings.colorSchemeBtn);
     const addClicksBtn = document.getElementById(DOMStrings.addClicksBtn);
-    const cashTextElement = document.querySelector(DOMStrings.cashTextElement);
     const clicksButtonSpan = document.getElementById(DOMStrings.clicksButtonSpan);
     const clicksCostSpan = document.getElementById(DOMStrings.clicksCostSpan);
+    const weaponsButtonSpan = document.getElementById(DOMStrings.weaponsButtonSpan);
+    const weaponsCostSpan = document.getElementById(DOMStrings.weaponsCostSpan);
+    const buyWeaponsBtn = document.getElementById(DOMStrings.buyWeaponsBtn);
+
 
     let num = 0;
     setImgSrc(imagesValue, false);    
     span.innerText = clicksCount;
     cashTextElement.innerText = `$${Number(cash)}`;
-    clicksButtonSpan.innerText = clicksCosts[clicksCostIndex].clicksToAdd;
-    clicksCostSpan.innerText = clicksCosts[clicksCostIndex].cost;
+
     // ----- Change Colors
     changeColorSchemeBtn.addEventListener('click', () => {
         changeColorScheme();
     });
 
+    // ------ Buy Weapons
+    if(weaponsCostIndex <= (weaponsCosts.length - 1)) {
+        weaponsButtonSpan.innerText = `${weaponsCosts[weaponsCostIndex].name} +${weaponsCosts[weaponsCostIndex].clicksToAdd}`;
+        weaponsCostSpan.innerText = weaponsCosts[weaponsCostIndex].cost;
+
+        showWeaponUI();
+        
+        buyWeaponsBtn.addEventListener('click', () => {
+            buyWeapon();
+            showWeaponUI();
+        });
+    } else {
+        removeWeaponsBtnUI();
+    }
+    
+
     // ----- Add clicks
-    addClicksBtn.addEventListener('click', () => {
-        addClicks();
-    });
+    if(clicksCostIndex <= (clicksCosts.length - 1)) {
+        clicksButtonSpan.innerText = clicksCosts[clicksCostIndex].clicksToAdd;
+        clicksCostSpan.innerText = clicksCosts[clicksCostIndex].cost;
+
+        addClicksBtn.addEventListener('click', () => {
+            addClicks();
+        });
+    } else {
+        removeClicksBtnUI();
+    }
+    
 
     // ----- Main Clicking Event Listener
     img.addEventListener('click', () => {
@@ -82,6 +161,7 @@ function appInit() {
         clicksPresentUI(clicksCounter());
         checkNumberOfClicks(clicksCount);
         changeCashUI(addCash());
+        weaponStrike();
         num++;
         if(num == 5) {
             num = 0;
@@ -90,7 +170,10 @@ function appInit() {
 
     // ----- RESET THE GAME
     resetBtn.addEventListener('click', () => {
-        reset('clicksCount', 'imagesValue', 'clicksPerClick', 'cashAmount', 'clicksCostIndex', 'currentLevelPoints');
+        reset('clicksCount', 'imagesValue', 
+        'clicksPerClick', 'cashAmount', 
+        'clicksCostIndex', 'currentLevelPoints',
+        'weaponsCostIndex');
     });
 }
 
@@ -114,10 +197,50 @@ function changeCostUI(cost, id) {
     spanElement.innerText = cost;
 }
 
+function changeWeaponBtnSpanUI() {
+    const weaponSpanBtn = document.getElementById(DOMStrings.weaponsButtonSpan);
+    weaponSpanBtn.innerText = `${weaponsCosts[weaponsCostIndex].name} +${weaponsCosts[weaponsCostIndex].clicksToAdd}`;
+}
+
+function showWeaponUI() {
+    const weaponImg = document.querySelector(DOMStrings.weaponImg);
+    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    let imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}.png`;
+    
+    if(width <= 600) {
+        imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}-compressor.png`;
+    }
+
+    if(weaponsCostIndex == 0) {
+        weaponImg.style.display = 'none';
+    } else {
+        weaponImg.src = imgSrc;
+        weaponImg.style.display = 'block';
+    }
+}
+
+function removeWeaponsBtnUI() {
+    const weaponBtnContainer = document.getElementById(DOMStrings.weaponBtnContainer);
+    weaponBtnContainer.style.display = 'none';
+}
+
+function removeClicksBtnUI() {
+    const clicksBtnContainer = document.getElementById(DOMStrings.clicksBtnContainer);
+    clicksBtnContainer.style.display = 'none';
+}
+
 function changeCashUI(cash) {
     cash = Number(cash);
     const cashTextElement = document.querySelector(DOMStrings.cashTextElement);
     cashTextElement.innerText = `$${cash}`;
+}
+
+function weaponStrike() {
+    const weapon = document.querySelector(DOMStrings.weapon);
+    weapon.classList.add('strike');
+    setTimeout(() => {
+        weapon.classList.remove('strike');
+    }, 300);
 }
 
 function clicksPresentUI(clicks) {
@@ -155,7 +278,15 @@ function setImgSrc(value, animationBool) {
 
 function addClicks() {
     if(cash >= clicksCosts[clicksCostIndex].cost) {
-        clicksPerClick = clicksCosts[clicksCostIndex].clicksToAdd;
+        let currentWeaponBonus;
+
+        if(weaponsCostIndex == 0) {
+            currentWeaponBonus = 0;
+        } else {
+            currentWeaponBonus = weaponsCosts[weaponsCostIndex - 1].clicksToAdd;
+        }
+
+        clicksPerClick = clicksCosts[clicksCostIndex].clicksToAdd + currentWeaponBonus;
         cash -= clicksCosts[clicksCostIndex].cost;
         changeCashUI(cash);
         clicksCostIndex++;
@@ -164,6 +295,29 @@ function addClicks() {
         localStorage.setItem('clicksCostIndex', clicksCostIndex);
         changeCostUI(clicksCosts[clicksCostIndex].cost, 'clickCost');
         changeCostUI(clicksCosts[clicksCostIndex].clicksToAdd, 'clicksToAdd');
+
+        console.log(clicksPerClick);
+    }
+}
+
+function buyWeapon() {
+
+    if(cash >= weaponsCosts[weaponsCostIndex].cost) {
+        clicksPerClick += weaponsCosts[weaponsCostIndex].clicksToAdd;
+        cash -= weaponsCosts[weaponsCostIndex].cost;
+        changeCashUI(cash);
+        weaponsCostIndex++;
+        localStorage.setItem('clicksPerClick', clicksPerClick);
+        localStorage.setItem('cashAmount', cash);
+        localStorage.setItem('weaponsCostIndex', weaponsCostIndex);
+
+        if(weaponsCostIndex <= 3) {
+            changeCostUI(weaponsCosts[weaponsCostIndex].cost, 'weaponCost');
+            changeWeaponBtnSpanUI();
+        } else {
+            removeWeaponsBtnUI();
+        }
+        
     }
 }
 
@@ -174,12 +328,13 @@ function addCash() {
     return Number(cash);
 }
 
-function reset(clicks, imgValue, clicksPerClick, cashAmount, clicksCostIndex, currentLevelPoints) {
+function reset(clicks, imgValue, clicksPerClick, cashAmount, clicksCostIndex, currentLevelPoints, weaponsCostIndex) {
     localStorage.removeItem(clicks);
     localStorage.removeItem(imgValue);
     localStorage.removeItem(clicksPerClick);
     localStorage.removeItem(cashAmount);
     localStorage.removeItem(clicksCostIndex);
+    localStorage.removeItem(weaponsCostIndex);
     localStorage.removeItem(currentLevelPoints);
     location.reload();
 }
@@ -192,7 +347,16 @@ function clicksCounter() {
 
 function checkNumberOfClicks(clicks) {
     if(clicks >= currentLevelPoints) {
-        currentLevelPoints = (currentLevelPoints + 50) * clicksPerClick;
+        let currentClicks;
+
+        if(clicksCostIndex == 0) {
+            currentClicks = 1;
+        } else {
+            currentClicks = clicksCosts[clicksCostIndex - 1].clicksToAdd;
+        }
+
+        currentLevelPoints = (currentLevelPoints + 50) * currentClicks;
+        console.log(currentLevelPoints);
         localStorage.setItem('currentLevelPoints', currentLevelPoints);
         imagesValue++;
         localStorage.setItem('imagesValue', imagesValue);
@@ -228,7 +392,13 @@ function checkAndSetLocalStorage() {
     if(localStorage.getItem('clicksCostIndex') == null) {
         localStorage.setItem('clicksCostIndex', clicksCostIndex);
     } else {
-        clicksCostIndex = localStorage.getItem('clicksCostIndex');
+        clicksCostIndex = Number(localStorage.getItem('clicksCostIndex'));
+    }
+
+    if(localStorage.getItem('weaponsCostIndex') == null) {
+        localStorage.setItem('weaponsCostIndex', weaponsCostIndex);
+    } else {
+        weaponsCostIndex = Number(localStorage.getItem('weaponsCostIndex'));
     }
 
     if(localStorage.getItem('imagesValue') == null) {
@@ -246,5 +416,5 @@ function checkAndSetLocalStorage() {
     }
 }
 // To do: 
-// --- fix checkNumberOfClicks function
-// --- create DOMString object
+// --- Add weapons system
+// --- Rethink about currentLevelPoints var
