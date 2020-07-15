@@ -6,22 +6,22 @@ let weaponsCostIndex = 0;
 
 const clicksCosts = [
     {
-        cost: 1000,
+        cost: 100,
         clicksToAdd: 2
     }, 
     
     {
-        cost: 3000,
+        cost: 100,
         clicksToAdd: 5
     }, 
     
     {
-        cost: 30000,
+        cost: 100,
         clicksToAdd: 10
     }, 
     
     {
-        cost: 50000,
+        cost: 100,
         clicksToAdd: 20
     },
 
@@ -294,10 +294,14 @@ function addClicks() {
         localStorage.setItem('clicksPerClick', clicksPerClick);
         localStorage.setItem('cashAmount', cash);
         localStorage.setItem('clicksCostIndex', clicksCostIndex);
-        changeCostUI(clicksCosts[clicksCostIndex].cost, 'clickCost');
-        changeCostUI(clicksCosts[clicksCostIndex].clicksToAdd, 'clicksToAdd');
 
-        console.log(clicksPerClick);
+        if(clicksCostIndex <= (clicksCosts.length - 1)) {
+            changeCostUI(clicksCosts[clicksCostIndex].cost, 'clickCost');
+            changeCostUI(clicksCosts[clicksCostIndex].clicksToAdd, 'clicksToAdd');
+        } else {
+            removeClicksBtnUI();
+        }
+        
     }
 }
 
@@ -312,7 +316,7 @@ function buyWeapon() {
         localStorage.setItem('cashAmount', cash);
         localStorage.setItem('weaponsCostIndex', weaponsCostIndex);
 
-        if(weaponsCostIndex <= 3) {
+        if(weaponsCostIndex <= (weaponsCosts.length - 1)) {
             changeCostUI(weaponsCosts[weaponsCostIndex].cost, 'weaponCost');
             changeWeaponBtnSpanUI();
         } else {
