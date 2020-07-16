@@ -1,4 +1,4 @@
-let clicksCount, imagesValue, clicksPerClick, cash;
+let clicksCount, imagesValue, clicksPerClick, cash, cashPerClick;
 let colorIndex = 0;
 let clicksCostIndex = 0;
 let currentLevelPoints = 50;
@@ -24,11 +24,6 @@ const clicksCosts = [
         cost: 100000,
         clicksToAdd: 20
     },
-
-    {
-        cost: 0,
-        clicksToAdd: 0,
-    }
 ];
 
 // Weapons 
@@ -60,13 +55,6 @@ const weaponsCosts = [
         clicksToAdd: 15,
         src: './img/arm',
     },
-
-    {
-        name: 'none',
-        cost: 0,
-        clicksToAdd: 0,
-        src: ''
-    }
 ];
 
 // COLOR SCHEMES
@@ -82,7 +70,7 @@ const DOMStrings = {
     resetBtn: '.game-container__reset-btn',
     colorSchemeBtn: 'changeColors',
     addClicksBtn: 'addClicks',
-    cashTextElement: '.cash-container__cash',
+    cashTextElement: 'cash',
     clicksButtonSpan: 'clicksToAdd',
     clicksCostSpan: 'clickCost',
     numClicksSpan: 'clicks',
@@ -94,6 +82,8 @@ const DOMStrings = {
     weaponImg: '.weapons',
     weaponBtnContainer: 'weaponBtn',
     clicksBtnContainer: 'clicksBtn',
+    clicksPerClickSpan: 'clicksPerClick',
+    cashPerClickSpan: 'cashPerClick',
 };
 // start the game;
 appInit();
@@ -104,7 +94,7 @@ function appInit() {
 
     const img = document.querySelector(DOMStrings.img);
     const resetBtn = document.querySelector(DOMStrings.resetBtn);
-    const cashTextElement = document.querySelector(DOMStrings.cashTextElement);
+    const cashTextElement = document.getElementById(DOMStrings.cashTextElement);
     const span = document.getElementById(DOMStrings.numClicksSpan);
     const changeColorSchemeBtn = document.getElementById(DOMStrings.colorSchemeBtn);
     const addClicksBtn = document.getElementById(DOMStrings.addClicksBtn);
@@ -116,7 +106,8 @@ function appInit() {
 
 
     let num = 0;
-    setImgSrc(imagesValue, false);    
+    setImgSrc(imagesValue, false);   
+    setGameInfoUI(); 
     span.innerText = clicksCount;
     cashTextElement.innerText = `$${Number(cash)}`;
 
@@ -137,6 +128,7 @@ function appInit() {
             showWeaponUI();
         });
     } else {
+        showWeaponUI();
         removeWeaponsBtnUI();
     }
     
@@ -155,24 +147,25 @@ function appInit() {
     
 
     // ----- Main Clicking Event Listener
-    img.addEventListener('click', () => {
+    img.addEventListener('mouseup', () => {
         changeBackground(num);
         clicksPresentUI(clicksCounter());
         checkNumberOfClicks(clicksCount);
         changeCashUI(addCash());
-        weaponStrike();
+        weaponStrikeRemoveUI()
         num++;
         if(num == 5) {
             num = 0;
         }
     });
 
+    img.addEventListener('mousedown', () => {
+        weaponStrikeAddUI();
+    });
+
     // ----- RESET THE GAME
     resetBtn.addEventListener('click', () => {
-        reset('clicksCount', 'imagesValue', 
-        'clicksPerClick', 'cashAmount', 
-        'clicksCostIndex', 'currentLevelPoints',
-        'weaponsCostIndex');
+        reset();
     });
 }
 
@@ -191,6 +184,13 @@ function changeColorScheme() {
     bodyEl.style.backgroundColor = colorsArr[colorIndex][0];
 }
 
+function setGameInfoUI() {
+    const clicksPerClickSpan = document.getElementById(DOMStrings.clicksPerClickSpan);
+    const cashPerClickSpan = document.getElementById(DOMStrings.cashPerClickSpan);
+    clicksPerClickSpan.innerText = clicksPerClick;
+    cashPerClickSpan.innerText = cashPerClick;
+}
+
 function changeCostUI(cost, id) {
     const spanElement = document.getElementById(id);
     spanElement.innerText = cost;
@@ -203,13 +203,13 @@ function changeWeaponBtnSpanUI() {
 
 function showWeaponUI() {
     const weaponImg = document.querySelector(DOMStrings.weaponImg);
-    
-
+    console.log('showed');
     if(weaponsCostIndex == 0) {
         weaponImg.style.display = 'none';
     } else {
         let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         let imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}.png`;
+        console.log(imgSrc);
     
         if(width <= 600) {
             imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}-compressor.png`;
@@ -232,16 +232,18 @@ function removeClicksBtnUI() {
 
 function changeCashUI(cash) {
     cash = Number(cash);
-    const cashTextElement = document.querySelector(DOMStrings.cashTextElement);
+    const cashTextElement = document.getElementById(DOMStrings.cashTextElement);
     cashTextElement.innerText = `$${cash}`;
 }
 
-function weaponStrike() {
+function weaponStrikeAddUI() {
     const weapon = document.querySelector(DOMStrings.weapon);
     weapon.classList.add('strike');
-    setTimeout(() => {
-        weapon.classList.remove('strike');
-    }, 300);
+}
+
+function weaponStrikeRemoveUI() {
+    const weapon = document.querySelector(DOMStrings.weapon);
+    weapon.classList.remove('strike');
 }
 
 function clicksPresentUI(clicks) {
@@ -287,13 +289,11 @@ function addClicks() {
             currentWeaponBonus = weaponsCosts[weaponsCostIndex - 1].clicksToAdd;
         }
 
-        clicksPerClick = clicksCosts[clicksCostIndex].clicksToAdd + currentWeaponBonus;
+        clicksPerClick = clicksPerClick + clicksCosts[clicksCostIndex].clicksToAdd + currentWeaponBonus;
+        cashPerClick = clicksPerClick * Math.max(clicksCostIndex, 1) * 10 ;
         cash -= clicksCosts[clicksCostIndex].cost;
         changeCashUI(cash);
         clicksCostIndex++;
-        localStorage.setItem('clicksPerClick', clicksPerClick);
-        localStorage.setItem('cashAmount', cash);
-        localStorage.setItem('clicksCostIndex', clicksCostIndex);
 
         if(clicksCostIndex <= (clicksCosts.length - 1)) {
             changeCostUI(clicksCosts[clicksCostIndex].cost, 'clickCost');
@@ -301,6 +301,11 @@ function addClicks() {
         } else {
             removeClicksBtnUI();
         }
+
+        localStorage.setItem('clicksPerClick', clicksPerClick);
+        localStorage.setItem('cashAmount', cash);
+        localStorage.setItem('clicksCostIndex', clicksCostIndex);
+        setGameInfoUI();
         
     }
 }
@@ -310,11 +315,9 @@ function buyWeapon() {
     if(cash >= weaponsCosts[weaponsCostIndex].cost) {
         clicksPerClick += weaponsCosts[weaponsCostIndex].clicksToAdd;
         cash -= weaponsCosts[weaponsCostIndex].cost;
+        cashPerClick = clicksPerClick * Math.max(clicksCostIndex, 1) * 10 ;
         changeCashUI(cash);
         weaponsCostIndex++;
-        localStorage.setItem('clicksPerClick', clicksPerClick);
-        localStorage.setItem('cashAmount', cash);
-        localStorage.setItem('weaponsCostIndex', weaponsCostIndex);
 
         if(weaponsCostIndex <= (weaponsCosts.length - 1)) {
             changeCostUI(weaponsCosts[weaponsCostIndex].cost, 'weaponCost');
@@ -322,25 +325,27 @@ function buyWeapon() {
         } else {
             removeWeaponsBtnUI();
         }
+
+        localStorage.setItem('clicksPerClick', clicksPerClick);
+        localStorage.setItem('cashAmount', cash);
+        localStorage.setItem('weaponsCostIndex', weaponsCostIndex);
+        setGameInfoUI();
+        console.log(weaponsCostIndex);
+        
         
     }
 }
 
 function addCash() {
-    let cashToAdd = clicksPerClick * Math.max(clicksCostIndex, 1) * 10 ;
-    cash += cashToAdd;
+    cashPerClick = clicksPerClick * Math.max(clicksCostIndex, 1) * 10 ;
+    cash += cashPerClick;
+    localStorage.setItem('cashPerClick', cashPerClick);
     localStorage.setItem('cashAmount', cash);
     return Number(cash);
 }
 
-function reset(clicks, imgValue, clicksPerClick, cashAmount, clicksCostIndex, currentLevelPoints, weaponsCostIndex) {
-    localStorage.removeItem(clicks);
-    localStorage.removeItem(imgValue);
-    localStorage.removeItem(clicksPerClick);
-    localStorage.removeItem(cashAmount);
-    localStorage.removeItem(clicksCostIndex);
-    localStorage.removeItem(weaponsCostIndex);
-    localStorage.removeItem(currentLevelPoints);
+function reset() {
+    localStorage.clear();
     location.reload();
 }
 
@@ -352,16 +357,7 @@ function clicksCounter() {
 
 function checkNumberOfClicks(clicks) {
     if(clicks >= currentLevelPoints) {
-        let currentClicks;
-
-        if(clicksCostIndex == 0) {
-            currentClicks = 1;
-        } else {
-            currentClicks = clicksCosts[clicksCostIndex - 1].clicksToAdd;
-        }
-
-        currentLevelPoints = (currentLevelPoints + 50) * currentClicks;
-        console.log(currentLevelPoints);
+        currentLevelPoints = (currentLevelPoints + 50) * clicksPerClick;
         localStorage.setItem('currentLevelPoints', currentLevelPoints);
         imagesValue++;
         localStorage.setItem('imagesValue', imagesValue);
@@ -385,6 +381,13 @@ function checkAndSetLocalStorage() {
         localStorage.setItem('clicksPerClick', clicksPerClick);
     } else {
         clicksPerClick = Number(localStorage.getItem('clicksPerClick'));
+    }
+
+    if(localStorage.getItem('cashPerClick') == null) {
+        cashPerClick = clicksPerClick * Math.max(clicksCostIndex, 1) * 10;
+        localStorage.setItem('cashPerClick', cashPerClick);
+    } else {
+        cashPerClick = Number(localStorage.getItem('cashPerClick'));
     }
 
     if(localStorage.getItem('cashAmount') == null) {
@@ -420,6 +423,3 @@ function checkAndSetLocalStorage() {
         currentLevelPoints = Number(localStorage.getItem('currentLevelPoints'));
     }
 }
-// To do: 
-// --- Add weapons system
-// --- Rethink about currentLevelPoints var
