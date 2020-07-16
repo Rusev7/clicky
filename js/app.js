@@ -1,3 +1,4 @@
+let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 let clicksCount, imagesValue, clicksPerClick, cash, cashPerClick;
 let colorIndex = 0;
 let clicksCostIndex = 0;
@@ -147,21 +148,36 @@ function appInit() {
     
 
     // ----- Main Clicking Event Listener
-    img.addEventListener('mouseup', () => {
-        changeBackground(num);
-        clicksPresentUI(clicksCounter());
-        checkNumberOfClicks(clicksCount);
-        changeCashUI(addCash());
-        weaponStrikeRemoveUI()
-        num++;
-        if(num == 5) {
-            num = 0;
-        }
-    });
-
-    img.addEventListener('mousedown', () => {
-        weaponStrikeAddUI();
-    });
+    if(width > 600) {
+        img.addEventListener('mouseup', () => {
+            changeBackground(num);
+            clicksPresentUI(clicksCounter());
+            checkNumberOfClicks(clicksCount);
+            changeCashUI(addCash());
+            weaponStrikeRemoveUI()
+            num++;
+            if(num == 5) {
+                num = 0;
+            }
+        });
+    
+        img.addEventListener('mousedown', () => {
+            weaponStrikeAddUI();
+        });
+    } else {
+        img.addEventListener('click', () => {
+            changeBackground(num);
+            clicksPresentUI(clicksCounter());
+            checkNumberOfClicks(clicksCount);
+            changeCashUI(addCash());
+            weaponStrikeUI();
+            num++;
+            if(num == 5) {
+                num = 0;
+            }
+        });
+    }
+    
 
     // ----- RESET THE GAME
     resetBtn.addEventListener('click', () => {
@@ -178,7 +194,6 @@ function changeBackground(num) {
 
 function changeColorScheme() {
     let colorSchemeRandomNum = Math.floor(Math.max(Math.random() * colorsArr.length, 0));
-    console.log(colorSchemeRandomNum);
     colorIndex = colorSchemeRandomNum;
     const bodyEl = document.querySelector('body');
     bodyEl.style.backgroundColor = colorsArr[colorIndex][0];
@@ -203,13 +218,10 @@ function changeWeaponBtnSpanUI() {
 
 function showWeaponUI() {
     const weaponImg = document.querySelector(DOMStrings.weaponImg);
-    console.log('showed');
     if(weaponsCostIndex == 0) {
         weaponImg.style.display = 'none';
     } else {
-        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         let imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}.png`;
-        console.log(imgSrc);
     
         if(width <= 600) {
             imgSrc = `${weaponsCosts[weaponsCostIndex - 1].src}-compressor.png`;
@@ -236,6 +248,15 @@ function changeCashUI(cash) {
     cashTextElement.innerText = `$${cash}`;
 }
 
+function weaponStrikeUI() {
+    const weapon = document.querySelector(DOMStrings.weapon);
+    weapon.classList.add('strike');
+
+    setTimeout(() => {
+        weapon.classList.remove('strike');
+    }, 300)
+}
+
 function weaponStrikeAddUI() {
     const weapon = document.querySelector(DOMStrings.weapon);
     weapon.classList.add('strike');
@@ -253,7 +274,6 @@ function clicksPresentUI(clicks) {
 
 function setImgSrc(value, animationBool) {
     const img = document.querySelector(DOMStrings.img);
-    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
     if(width <= 600) {
         img.src = `img/img-${value}-compressor.png`;
@@ -330,8 +350,6 @@ function buyWeapon() {
         localStorage.setItem('cashAmount', cash);
         localStorage.setItem('weaponsCostIndex', weaponsCostIndex);
         setGameInfoUI();
-        console.log(weaponsCostIndex);
-        
         
     }
 }
