@@ -16,3 +16,6 @@ sass/base/_typography.scss
 sass/components/_game-container.scss
 package.json
 package-lock.json
+css/style.comp.css
+css/style.prefix.css
+img/egg.psd
