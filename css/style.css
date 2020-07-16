@@ -9,6 +9,10 @@ html {
   scroll-behavior: smooth;
   font-size: 62.5%; }
 
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 52.5%; } }
+
 body {
   box-sizing: border-box;
   overflow-x: hidden;
@@ -203,7 +207,14 @@ a:visited {
 @media screen and (max-width: 600px) {
   .weapons {
     width: 10rem;
+    top: 40%;
     right: 15%; } }
+
+@media screen and (max-width: 400px) {
+  .weapons {
+    width: 9rem;
+    top: 40%;
+    right: 10%; } }
 
 .strike {
   animation: strike .3s ease-out 1; }
